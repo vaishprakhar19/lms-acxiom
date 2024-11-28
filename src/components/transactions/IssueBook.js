@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { db } from '../firebase';  // Import Firebase setup
+import { collection, addDoc } from 'firebase/firestore';
 
 const IssueBook = () => {
     const books = [
@@ -16,12 +18,29 @@ const IssueBook = () => {
     });
     const [remarks, setRemarks] = useState('');
 
-    const handleIssueBook = () => {
-        alert(`Book issued successfully!\n\nBook: ${selectedBook.name}\nAuthor: ${selectedBook.author}\nIssue Date: ${issueDate}\nReturn Date: ${returnDate}\nRemarks: ${remarks}`);
+    // Firebase function to store the issued book details
+    const handleIssueBook = async () => {
+        try {
+            await addDoc(collection(db, "issuedBooks"), {
+                bookName: selectedBook.name,
+                author: selectedBook.author,
+                issueDate: issueDate,
+                returnDate: returnDate,
+                remarks: remarks,
+                issueStatus: 'issued',  // Default status
+            });
+
+            alert(`Book issued successfully!\n\nBook: ${selectedBook.name}\nAuthor: ${selectedBook.author}\nIssue Date: ${issueDate}\nReturn Date: ${returnDate}\nRemarks: ${remarks}`);
+        } catch (error) {
+            console.error("Error issuing book: ", error);
+            alert("There was an error issuing the book. Please try again.");
+        }
     };
 
+    // Logout function to clear user session and redirect
     const handleLogout = () => {
         alert('Logged out!');
+        localStorage.removeItem('isAdmin');  // Clear user session
         window.location.href = '/'; // Redirect to the homepage
     };
 
@@ -69,7 +88,7 @@ const IssueBook = () => {
                 {/* Return Date (Prepopulated) */}
                 <label>
                     Return Date:
-                    <input type="date" value={returnDate} readOnly />
+                    <input type="date" value={returnDate} onChange={(e) => setReturnDate(e.target.value)} />
                 </label>
                 <br />
 

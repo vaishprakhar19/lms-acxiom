@@ -1,29 +1,39 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { db } from './firebase'; // Import Firebase setup
+import { collection, getDocs } from 'firebase/firestore';
 
 const AdminHome = () => {
-    const products = [
-        { codeFrom: '100', codeTo: '200', category: 'Fiction' },
-        { codeFrom: '201', codeTo: '300', category: 'Science' },
-        { codeFrom: '301', codeTo: '400', category: 'History' },
-    ];
+    const [books, setBooks] = useState([]);
+
+    useEffect(() => {
+        const fetchBooks = async () => {
+            try {
+                const querySnapshot = await getDocs(collection(db, "books"));
+                const booksList = querySnapshot.docs.map(doc => doc.data());
+                setBooks(booksList);
+            } catch (error) {
+                console.error("Error fetching books: ", error);
+            }
+        };
+
+        fetchBooks();
+    }, []);
 
     return (
         <div>
             <h2>Admin Home</h2>
-            <table border="1">
+            <table border="1" style={{ width: '50%', borderCollapse: 'collapse', margin: '20px auto' }}>
                 <thead>
                     <tr>
-                        <th>Code From</th>
-                        <th>Code To</th>
+                        <th>Serial No</th>
                         <th>Category</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {products.map((product, index) => (
+                    {books.map((book, index) => (
                         <tr key={index}>
-                            <td>{product.codeFrom}</td>
-                            <td>{product.codeTo}</td>
-                            <td>{product.category}</td>
+                            <td>{book.serialNo}</td>
+                            <td>{book.category}</td>
                         </tr>
                     ))}
                 </tbody>

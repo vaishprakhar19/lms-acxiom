@@ -1,10 +1,43 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { db } from './firebase'; // Import Firebase setup
+import { collection, getDocs } from 'firebase/firestore';
 
 const UserHome = () => {
+    const [books, setbooks] = useState([]);
+
+    useEffect(() => {
+        const fetchbooks = async () => {
+            try {
+                const querySnapshot = await getDocs(collection(db, 'books')); // Adjust the collection name as per your Firestore setup
+                const bookList = querySnapshot.docs.map(doc => doc.data());
+                setbooks(bookList);
+            } catch (error) {
+                console.error("Error fetching books: ", error);
+            }
+        };
+
+        fetchbooks();
+    }, []);
+
     return (
         <div>
             <h2>Welcome to the Library!</h2>
-            <p>Explore our collections and enjoy your time reading.</p>
+            <table border="1" style={{ width: '50%', borderCollapse: 'collapse', margin: '20px auto' }}>
+                <thead>
+                    <tr>
+                        <th>Code From</th>
+                        <th>Category</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {books.map((book, index) => (
+                        <tr key={index}>
+                            <td>{book.codeFrom}</td>
+                            <td>{book.category}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
         </div>
     );
 };
