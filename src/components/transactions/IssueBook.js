@@ -68,14 +68,12 @@ const IssueBook = () => {
                         ))}
                     </select>
                 </label>
-                <br />
 
                 {/* Author (Prepopulated, Non-editable) */}
                 <label>
                     Enter Author:
                     <input type="text" value={selectedBook.author} readOnly />
                 </label>
-                <br />
 
                 {/* Issue Date */}
                 <label>
@@ -86,14 +84,12 @@ const IssueBook = () => {
                         onChange={(e) => setIssueDate(e.target.value)}
                     />
                 </label>
-                <br />
 
                 {/* Return Date (Prepopulated) */}
                 <label>
                     Return Date:
                     <input type="date" value={returnDate} onChange={(e) => setReturnDate(e.target.value)} />
                 </label>
-                <br />
 
                 {/* Remarks */}
                 <label>
@@ -104,19 +100,12 @@ const IssueBook = () => {
                         placeholder="Optional"
                     ></textarea>
                 </label>
-                <br />
 
                 {/* Issue Button */}
                 <button type="button" onClick={handleIssueBook}>
                     Issue Book
                 </button>
-                <br />
-                <br />
 
-                {/* Logout Button */}
-                <button type="button" onClick={handleLogout}>
-                    Log Out
-                </button>
             </form>
         </div>
     );

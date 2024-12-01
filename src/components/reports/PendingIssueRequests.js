@@ -8,10 +8,7 @@ const PendingIssueRequests = () => {
         // This is where you would fetch data from an API or database
         // For now, we're using static data for demonstration
         setIssueRequests([
-            { membershipId: 'M001', name: 'The Great Gatsby', requestedDate: '2023-01-10', requestFulfilledDate: '2023-01-12' },
-            { membershipId: 'M002', name: '1984', requestedDate: '2022-12-15', requestFulfilledDate: '2022-12-17' },
-            { membershipId: 'M003', name: 'Inception', requestedDate: '2023-02-01', requestFulfilledDate: '2023-02-03' },
-            // Add more issue requests data here...
+            
         ]);
     }, []);
 

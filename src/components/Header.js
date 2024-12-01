@@ -1,40 +1,52 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './transactions/Transactions.css';
 
 const Header = () => {
     const navigate = useNavigate();
 
-    // Check if the user is an admin by reading from localStorage
+    // State to store user information
     const [user, setUser] = useState(() => {
-        const storedUser = localStorage.getItem("user");
+        const storedUser = localStorage.getItem('user');
         return storedUser ? JSON.parse(storedUser) : {}; // Default to an empty object
     });
 
+    // Update user state when localStorage changes
+    useEffect(() => {
+        const handleStorageChange = () => {
+            const storedUser = localStorage.getItem('user');
+            setUser(storedUser ? JSON.parse(storedUser) : {});
+        };
+
+        // Add a listener for localStorage changes
+        window.addEventListener('storage', handleStorageChange);
+
+        // Cleanup the listener on component unmount
+        return () => {
+            window.removeEventListener('storage', handleStorageChange);
+        };
+    }, []);
+
     // Handle logout by clearing localStorage and redirecting to home
     const handleLogout = () => {
-        localStorage.removeItem('user');  // Remove user data
-        navigate('/');  // Redirect to home page
-    };
-
-    // Render home link based on user type
-    const renderHomeLink = () => {
-        if (user.isAdmin === true) {
-            return <button onClick={() => navigate('/admin/home')}>Home</button>;
-        } else if (user.isAdmin === false) {
-            return <button onClick={() => navigate('/user/home')}>Home</button>;
-        }
-        return null; // If no login, do not show the home button
+        localStorage.removeItem('user'); // Remove user data
+        setUser({}); // Update state to reflect logged-out state
+        navigate('/'); // Redirect to home page
     };
 
     return (
-        <header>
-            <nav>
-                {/* Render Home based on user.isAdmin value */}
-                {renderHomeLink()}
-
-                {/* Show additional links if user is logged in */}
+        <header className="navbar">
+            <div className="navbar-brand">
+                <button onClick={() => navigate('/')} className="logo">
+                    Library Management System
+                </button>
+            </div>
+            <nav className="navbar-links">
                 {user.isAdmin !== undefined && (
                     <>
+                        <button onClick={() => navigate(user.isAdmin ? '/admin/home' : '/user/home')}>
+                            Home
+                        </button>
                         <button onClick={() => navigate('/transactions')}>Transactions</button>
                         <button onClick={() => navigate('/reports')}>Reports</button>
                         {user.isAdmin && (

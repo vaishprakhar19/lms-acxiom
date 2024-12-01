@@ -1,17 +1,36 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../firebase';  // Firebase configuration
-import { collection, addDoc } from 'firebase/firestore';
+import { addDoc, collection, doc, getDocs, query, updateDoc, where } from 'firebase/firestore';
 
 const PayFine = () => {
-    const [bookName, setBookName] = useState('');
+    const [name, setBookName] = useState('');
     const [author, setAuthor] = useState('');
     const [serialNo, setSerialNo] = useState('');
     const [issueDate, setIssueDate] = useState('');
     const [returnDate, setReturnDate] = useState('');
     const [actualReturnDate, setActualReturnDate] = useState('');
-    const [fineCalculated, setFineCalculated] = useState(0);
+    const [fine, setFine] = useState(0);
     const [finePaid, setFinePaid] = useState(false);
     const [remarks, setRemarks] = useState('');
+    const [books, setBooks] = useState([]);  // Store books from Firestore
+
+    // Fetch the books from `returnedBooks` collection to populate the dropdown
+    useEffect(() => {
+        const fetchReturnedBooks = async () => {
+            try {
+                const querySnapshot = await getDocs(collection(db, 'returnedBooks'));
+                const booksData = querySnapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data(),
+                }));
+                setBooks(booksData);
+            } catch (error) {
+                console.error('Error fetching books: ', error);
+            }
+        };
+
+        fetchReturnedBooks();
+    }, []);
 
     // Set the default return date to 15 days from today
     useEffect(() => {
@@ -20,132 +39,135 @@ const PayFine = () => {
         setReturnDate(defaultReturnDate.toISOString().split('T')[0]); // Set it in yyyy-mm-dd format
     }, []);
 
-    // Function to calculate fine based on days overdue
-    const calculateFine = () => {
-        const issue = new Date(issueDate);
-        const returnD = new Date(returnDate);
-        const actualReturn = new Date(actualReturnDate);
-        
-        if (actualReturn > returnD) {
-            const overdueDays = Math.floor((actualReturn - returnD) / (1000 * 3600 * 24)); // Calculate overdue days
-            setFineCalculated(overdueDays * 5); // Assume a fine rate of ₹5 per overdue day
-        } else {
-            setFineCalculated(0);
-        }
+    // Handle book selection from dropdown and populate fields
+    const handleBookSelect = (selectedBook) => {
+        setBookName(selectedBook.name);
+        setAuthor(selectedBook.author);
+        setSerialNo(selectedBook.serialNo);
+        setIssueDate(selectedBook.issueDate);
+        setReturnDate(selectedBook.returnDate);
+        setActualReturnDate(selectedBook.actualReturnDate || '');
+        setFine(selectedBook.fine || 0);
+        setFinePaid(selectedBook.finePaid || false);
+        setRemarks(selectedBook.remarks || '');
     };
 
     // Function to handle form submission and store data in Firestore
     const handleSubmit = async () => {
         try {
-            // Store fine payment data in Firestore
-            await addDoc(collection(db, "finePayments"), {
-                bookName: bookName,
-                author: author,
-                serialNo: serialNo,
-                issueDate: issueDate,
-                returnDate: returnDate,
-                actualReturnDate: actualReturnDate,
-                fineCalculated: fineCalculated,
-                finePaid: finePaid,
-                remarks: remarks,
+            // Find the selected book's document reference using its ID
+            const bookQuery = query(
+                collection(db, "returnedBooks"),
+                where("serialNo", "==", serialNo)
+            );
+
+            const querySnapshot = await getDocs(bookQuery);
+            const bookDocRef = querySnapshot.docs[0].ref;
+
+            // Update the `finePaid` field and any other necessary fields
+            await updateDoc(bookDocRef, {
+                finePaid: finePaid,  // Update the `finePaid` field based on checkbox
+                remarks: remarks,    // Update the remarks if any
             });
 
-            alert(`Fine Paid Details:\n\nBook: ${bookName}\nAuthor: ${author}\nSerial No: ${serialNo}\nIssue Date: ${issueDate}\nReturn Date: ${returnDate}\nActual Return Date: ${actualReturnDate}\nFine: ₹${fineCalculated}\nFine Paid: ${finePaid ? 'Yes' : 'No'}\nRemarks: ${remarks}`);
+            alert(`Fine Paid Details:\n\nBook: ${name}\nAuthor: ${author}\nSerial No: ${serialNo}\nIssue Date: ${issueDate}\nReturn Date: ${returnDate}\nActual Return Date: ${actualReturnDate}\nFine: ₹${fine}\nFine Paid: ${finePaid ? 'Yes' : 'No'}\nRemarks: ${remarks}`);
         } catch (error) {
             console.error("Error paying fine: ", error);
             alert("There was an error processing the fine payment. Please try again.");
         }
     };
 
-    // Handle logout by clearing session and redirecting to home
-    const handleLogout = () => {
-        alert('Logged out!');
-        localStorage.removeItem('isAdmin');  // Clear user session
-        window.location.href = '/'; // Redirect to homepage
-    };
+
 
     return (
         <div>
             <h2>Pay Fine</h2>
             <form>
-                {/* Book Name (Text Box) */}
+                {/* Book Name Dropdown */}
                 <label>
-                    Enter Book Name:
-                    <input
-                        type="text"
-                        value={bookName}
-                        onChange={(e) => setBookName(e.target.value)}
-                    />
+                    Select Book:
+                    <select
+                        value={name}
+                        onChange={(e) => {
+                            const selectedBook = books.find(book => book.name === e.target.value);
+                            handleBookSelect(selectedBook);
+                        }}
+                    >
+                        <option value="">Select a book</option>
+                        {books.map((book) => (
+                            <option key={book.id} value={book.name}>
+                                {book.name} - {book.author}
+                            </option>
+                        ))}
+                    </select>
                 </label>
-                <br />
+                
 
-                {/* Author (Text Box) */}
+                {/* Author (Auto-populated) */}
                 <label>
-                    Enter Author:
+                    Author:
                     <input
                         type="text"
                         value={author}
-                        onChange={(e) => setAuthor(e.target.value)}
+                        readOnly
                     />
                 </label>
-                <br />
+                
 
-                {/* Serial No (Text Box) */}
+                {/* Serial No (Auto-populated) */}
                 <label>
                     Serial No:
                     <input
                         type="text"
                         value={serialNo}
-                        onChange={(e) => setSerialNo(e.target.value)}
-                        required
+                        readOnly
                     />
                 </label>
-                <br />
+                
 
-                {/* Issue Date (Calendar) */}
+                {/* Issue Date (Auto-populated) */}
                 <label>
                     Issue Date:
                     <input
                         type="date"
                         value={issueDate}
-                        onChange={(e) => setIssueDate(e.target.value)}
+                        readOnly
                     />
                 </label>
-                <br />
+                
 
-                {/* Return Date (Prepopulated with 15 days ahead) */}
+                {/* Return Date (Auto-populated) */}
                 <label>
                     Return Date:
                     <input
                         type="date"
                         value={returnDate}
-                        onChange={(e) => setReturnDate(e.target.value)}
+                        readOnly
                     />
                 </label>
-                <br />
+                
 
-                {/* Actual Return Date (Calendar) */}
+                {/* Actual Return Date */}
                 <label>
                     Actual Return Date:
                     <input
                         type="date"
                         value={actualReturnDate}
                         onChange={(e) => setActualReturnDate(e.target.value)}
-                        onBlur={calculateFine}  // Calculate fine when the date is changed
                     />
                 </label>
-                <br />
+                
 
-                {/* Fine Calculated (Text Box) */}
+                {/* Fine Calculated (Read-Only) */}
                 <label>
                     Fine Calculated:
                     <input
                         type="text"
-                        value={`₹${fineCalculated}`}
+                        value={`₹${fine}`}
                         readOnly
                     />
                 </label>
-                <br />
+                
 
                 {/* Fine Paid (Checkbox) */}
                 <label>
@@ -156,7 +178,7 @@ const PayFine = () => {
                         onChange={() => setFinePaid(!finePaid)}
                     />
                 </label>
-                <br />
+                
 
                 {/* Remarks (Text Area, Non-Mandatory) */}
                 <label>
@@ -167,22 +189,18 @@ const PayFine = () => {
                         placeholder="Optional"
                     ></textarea>
                 </label>
-                <br />
+                
 
                 {/* Submit Button */}
                 <button type="button" onClick={handleSubmit}>
                     Submit
                 </button>
-                <br />
-                <br />
-
-                {/* Logout Button */}
-                <button type="button" onClick={handleLogout}>
-                    Log Out
-                </button>
+                
+                
             </form>
         </div>
     );
 };
+
 
 export default PayFine;

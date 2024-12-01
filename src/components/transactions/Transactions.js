@@ -4,14 +4,8 @@ import './Transactions.css';
 
 const Transactions = () => {
     return (
-        <div className="transactions-container" style={{ display: 'flex' }}>
-            <aside className="sidebar" style={{
-                width: '200px',
-                height: '100vh',
-                background: '#f4f4f4',
-                padding: '10px',
-                borderRight: '2px solid #ddd'
-            }}>
+        <div className="container">
+            <aside className="sidebar">
                 <ul>
                     <li>
                         <Link to="is-book-available">Is Book Available</Link>
@@ -27,7 +21,7 @@ const Transactions = () => {
                     </li>
                 </ul>
             </aside>
-            <main className="content"  style={{ flex: 1, padding: '20px' }}>
+            <main className="content">
                 <h1>Transactions</h1>
                 <Outlet />
             </main>

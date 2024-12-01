@@ -30,7 +30,7 @@ const UserLogin = () => {
     };
 
     return (
-        <div>
+        <div className='form'>
             <h2>User Login</h2>
             <input
                 type="text"

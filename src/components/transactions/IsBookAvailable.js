@@ -1,55 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { db } from '../firebase'; // Firebase configuration
-import { collection, getDocs, query, where } from 'firebase/firestore';
 
 const IsBookAvailable = () => {
-    const [books, setBooks] = useState([]);
     const [selectedBookName, setSelectedBookName] = useState('');
     const [selectedAuthor, setSelectedAuthor] = useState('');
     const navigate = useNavigate();
+    const [books, setBooks] = useState(() => {
+        const storedBooks = localStorage.getItem("books");
+        return storedBooks ? JSON.parse(storedBooks) : []; // Default to an empty array
+    });
 
-    useEffect(() => {
-        // Fetch books from Firestore
-        const fetchBooks = async () => {
-            try {
-                const querySnapshot = await getDocs(collection(db, 'books'));
-                const fetchedBooks = querySnapshot.docs.map((doc) => doc.data());
-                setBooks(fetchedBooks);
-                if (fetchedBooks.length > 0) {
-                    setSelectedBookName(fetchedBooks[0].name);
-                    setSelectedAuthor(fetchedBooks[0].author);
-                }
-            } catch (error) {
-                console.error('Error fetching books: ', error);
-            }
-        };
+    // Check Availability - Filter books and navigate to search results
+    const checkAvailability = () => {
+        // Filter books based on selected book name and author
+        const filteredBooks = books.filter(
+            (book) =>
+                (selectedBookName ? book.name === selectedBookName : true) &&
+                (selectedAuthor ? book.author === selectedAuthor : true)
+        );
 
-        fetchBooks();
-    }, []);
-
-    const checkAvailability = async () => {
-        try {
-            const booksQuery = query(
-                collection(db, 'books'),
-                where('name', '==', selectedBookName),
-                where('author', '==', selectedAuthor)
-            );
-            const querySnapshot = await getDocs(booksQuery);
-
-            if (!querySnapshot.empty) {
-                // Redirect to a results page if the book is available
-                navigate('/transactions/search-results', {
-                    state: { available: true, bookName: selectedBookName, author: selectedAuthor },
-                });
-            } else {
-                navigate('/transactions/search-results', {
-                    state: { available: false, bookName: selectedBookName, author: selectedAuthor },
-                });
-            }
-        } catch (error) {
-            console.error('Error checking book availability: ', error);
-        }
+        // Navigate to the search-results page and pass filtered data
+        navigate('search-results', {
+            state: { results: filteredBooks },
+        });
     };
 
     return (
@@ -62,6 +35,7 @@ const IsBookAvailable = () => {
                         value={selectedBookName}
                         onChange={(e) => setSelectedBookName(e.target.value)}
                     >
+                        <option value="">Select a book</option>
                         {books.map((book) => (
                             <option key={book.name} value={book.name}>
                                 {book.name}
@@ -69,7 +43,7 @@ const IsBookAvailable = () => {
                         ))}
                     </select>
                 </label>
-                <br />
+                
 
                 <label>
                     Enter Author:
@@ -77,8 +51,9 @@ const IsBookAvailable = () => {
                         value={selectedAuthor}
                         onChange={(e) => setSelectedAuthor(e.target.value)}
                     >
+                        <option value="">Select an author</option>
                         {books
-                            .filter((book) => book.name === selectedBookName)
+                            .filter((book) => book.name === selectedBookName) // Only show authors for selected book
                             .map((book) => (
                                 <option key={book.author} value={book.author}>
                                     {book.author}
@@ -86,7 +61,7 @@ const IsBookAvailable = () => {
                             ))}
                     </select>
                 </label>
-                <br />
+                
 
                 <button type="button" onClick={checkAvailability}>
                     Check Availability

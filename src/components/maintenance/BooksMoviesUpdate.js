@@ -73,7 +73,7 @@ const BooksMoviesUpdate = () => {
       <form onSubmit={handleSubmit}>
         <label>
           Type:
-          <br />
+          
           <label>
             <input
               type="radio"
@@ -95,7 +95,7 @@ const BooksMoviesUpdate = () => {
             Movie
           </label>
         </label>
-        <br />
+        
 
         <label>
           Select Book/Movie:
@@ -110,7 +110,7 @@ const BooksMoviesUpdate = () => {
               ))}
           </select>
         </label>
-        <br />
+        
 
         <label>
           Book/Movie Name:
@@ -122,7 +122,7 @@ const BooksMoviesUpdate = () => {
             required
           />
         </label>
-        <br />
+        
 
         <label>
           Serial No:
@@ -134,7 +134,7 @@ const BooksMoviesUpdate = () => {
             required
           />
         </label>
-        <br />
+        
 
         <label>
           Status:
@@ -148,7 +148,7 @@ const BooksMoviesUpdate = () => {
             <option value="Checked Out">Checked Out</option>
           </select>
         </label>
-        <br />
+        
 
         <label>
           Date:
@@ -160,7 +160,7 @@ const BooksMoviesUpdate = () => {
             required
           />
         </label>
-        <br />
+        
 
         <button type="submit">Update Book/Movie</button>
       </form>

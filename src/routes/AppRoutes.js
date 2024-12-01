@@ -29,16 +29,15 @@ import MembershipUpdate from '../components/maintenance/MembershipUpdate';
 import BooksMoviesAdd from '../components/maintenance/BooksMoviesAdd';
 import BooksMoviesUpdate from '../components/maintenance/BooksMoviesUpdate';
 import UserManagement from '../components/maintenance/UserManagement';
+import Login from '../components/Login';
 
 const AppRoutes = () => {
     return (
         <Router>
             <Header />
-            <Link to="/admin/login">Admin Login</Link> |{' '}
-            <Link to="/user/login">User Login</Link>
-
             <Routes>
                 {/* Authentication Routes */}
+                <Route exact path="/" element={<Login />} />
                 <Route path="/admin/login" element={<AdminLogin />} />
                 <Route path="/user/login" element={<UserLogin />} />
                 <Route path="/admin/home" element={<AdminHome />} />
@@ -50,7 +49,7 @@ const AppRoutes = () => {
                     <Route path="issue-book" element={<IssueBook />} />
                     <Route path="return-book" element={<ReturnBook />} />
                     <Route path="pay-fine" element={<PayFine />} />
-                    <Route path="search-results" element={<SearchResults />} />
+                    <Route path="is-book-available/search-results" element={<SearchResults />} />
                 </Route>
 
                 {/* Reports Routes */}
@@ -69,7 +68,7 @@ const AppRoutes = () => {
                     <Route path="membership/update" element={<MembershipUpdate />} />
                     <Route path="books-movies/add" element={<BooksMoviesAdd />} />
                     <Route path="books-movies/update" element={<BooksMoviesUpdate />} />
-                    <Route path="user-management" element={<UserManagement/>} />
+                    <Route path="user-management" element={<UserManagement />} />
                 </Route>
             </Routes>
         </Router>

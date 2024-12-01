@@ -1,0 +1,359 @@
+/* Transactions.css */
+
+.container {
+    display: flex;
+    flex-direction: row;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    height: calc(100vh - 65px);
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #2c3e50;
+    color: #ecf0f1;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar ul li {
+    margin: 15px 0;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: #ecf0f1;
+    font-size: 16px;
+    display: block;
+    padding: 10px 15px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+.sidebar ul li ul{
+    margin-left:20px;
+}
+
+.sidebar ul li a:hover {
+    background-color: #34495e;
+}
+
+.content {
+    flex: 1;
+    padding: 20px;
+    background-color: #f8f9fa;
+    overflow-y: auto;
+}
+
+.content h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #34495e;
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        text-align: center;
+        padding: 10px;
+    }
+
+    .sidebar ul li {
+        display: inline-block;
+        margin: 5px;
+    }
+
+    .sidebar ul li a {
+        display: inline-block;
+    }
+}
+/* Generic.css */
+
+/* Form Container */
+form, .form {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+}
+
+/* Form Labels */
+form label, .form label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 16px;
+    color: #34495e;
+}
+
+/* Input Fields */
+form input[type="text"],
+form input[type="date"],
+form input[type="password"],
+form input[type="number"],
+.form input,
+form select,
+form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #bdc3c7;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #2c3e50;
+    box-sizing: border-box;
+}
+
+/* Readonly Input Styling */
+form input[readonly] {
+    background-color: #ecf0f1;
+    color: #7f8c8d;
+}
+
+/* Textarea */
+form textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* Buttons */
+form button, .form button {
+    background-color: #2c3e50;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-right: 10px;
+}
+
+form button:hover {
+    background-color: #34495e;
+}
+
+/* Form Headings */
+h2 {
+    text-align: center;
+    font-size: 24px;
+    color: #34495e;
+    margin-bottom: 20px;
+}
+
+::-webkit-scrollbar{
+    display: none;
+}
+/* TableStyles.css */
+
+/* General Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+    background-color: #ffffff;
+    margin: 20px 0;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Table Header */
+thead {
+    background-color: #2c3e50;
+    color: #ecf0f1;
+}
+
+thead th {
+    text-align: left;
+    padding: 10px 15px;
+    font-size: 16px;
+}
+
+/* Table Body */
+tbody td {
+    padding: 10px 15px;
+    font-size: 14px;
+    color: #34495e;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Alternate Row Colors */
+tbody tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+tbody tr:nth-child(odd) {
+    background-color: #ffffff;
+}
+
+/* Hover Effect */
+tbody tr:hover {
+    background-color: #f2f2f2;
+}
+
+/* Highlight First Column */
+tbody td:first-child {
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+/* Mobile Responsive Table */
+@media (max-width: 768px) {
+    table, thead, tbody, th, td, tr {
+        display: block;
+    }
+
+    thead tr {
+        display: none;
+    }
+
+    tbody tr {
+        margin-bottom: 20px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    tbody td {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    tbody td:before {
+        content: attr(data-label);
+        font-weight: bold;
+        color: #8697a8;
+        flex: 1;
+    }
+}
+
+/* Navbar.css */
+
+/* Navbar Container */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #2c3e50;
+    color: #ecf0f1;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+    height: 45px;
+}
+
+/* Navbar Brand/Logo */
+.navbar-brand {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.navbar-brand .logo {
+    text-decoration: none;
+    color: #ecf0f1;
+    background: none;
+    border: none;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 0;
+}
+
+/* Navbar Links */
+.navbar-links {
+    display: flex;
+    gap: 15px;
+}
+
+.navbar-links button {
+    background-color: transparent;
+    border: none;
+    color: #ecf0f1;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.navbar-links button:hover {
+    background-color: #34495e;
+}
+
+/* Responsive Navbar */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .navbar-links {
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+    }
+
+    .navbar-links button {
+        width: 100%;
+        text-align: left;
+    }
+}
+
+/* LinksPage.css */
+
+/* Container for the links */
+.page-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f8f9fa;
+    font-family: Arial, sans-serif;
+}
+
+/* Links Styling */
+.page-container a {
+    text-decoration: none;
+    color: #2c3e50;
+    font-size: 18px;
+    margin: 0 10px;
+    padding: 10px 20px;
+    border: 2px solid #2c3e50;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+/* Hover */
+.page-container a:hover {
+    background-color: #2c3e50;
+    color: #ecf0f1;
+    border-color: #34495e;
+    transform: scale(1.05);
+}
+
+/* Active Link Styling */
+.page-container a:active {
+    background-color: #34495e;
+    color: #ffffff;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .page-container a {
+        font-size: 16px;
+        padding: 8px 16px;
+        margin: 5px;
+    }
+}
+
+

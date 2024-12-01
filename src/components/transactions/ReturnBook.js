@@ -10,6 +10,7 @@ const ReturnBook = () => {
     const [returnDate, setReturnDate] = useState('');
     const [actualReturnDate, setActualReturnDate] = useState('');
     const [remarks, setRemarks] = useState('');
+    const [fine, setFine] = useState(0); // Fine calculation
 
     // Fetch issued books from the `issues` collection
     useEffect(() => {
@@ -44,6 +45,23 @@ const ReturnBook = () => {
         }
     }, [issueDate]);
 
+    // Calculate fine if dates differ
+    useEffect(() => {
+        if (actualReturnDate && returnDate) {
+            const returnDateObj = new Date(returnDate);
+            const actualReturnDateObj = new Date(actualReturnDate);
+
+            // If the actual return date is after the expected return date, calculate fine
+            if (actualReturnDateObj > returnDateObj) {
+                const timeDifference = actualReturnDateObj - returnDateObj;
+                const daysLate = timeDifference / (1000 * 3600 * 24); // Convert milliseconds to days
+                setFine(daysLate * 5); // 5 rupees per day
+            } else {
+                setFine(0); // No fine if returned on time
+            }
+        }
+    }, [actualReturnDate, returnDate]);
+
     const handleReturnBook = async () => {
         // Ensure the actual return date is valid
         if (!actualReturnDate) {
@@ -58,20 +76,22 @@ const ReturnBook = () => {
         try {
             // Add the returned book details to the `returnedBooks` collection
             await addDoc(collection(db, 'returnedBooks'), {
-                bookName: selectedBook.name,
+                name: selectedBook.name,
                 author: selectedBook.author,
                 serialNo: serialNo,
                 issueDate: issueDate,
                 returnDate: returnDate,
                 actualReturnDate: actualReturnDate,
                 remarks: remarks,
+                fine: fine, // Store calculated fine
+                finePaid: fine === 0 ? true : false, // Set paid to true if fine is 0, else false
             });
 
             // Remove the book entry from the `issues` collection
             const issueDocRef = doc(db, 'issues', selectedBook.id);
             await deleteDoc(issueDocRef);
 
-            alert(`Book returned successfully!\n\nBook: ${selectedBook.name}\nSerial No: ${serialNo}\nIssue Date: ${issueDate}\nReturn Date: ${returnDate}\nActual Return Date: ${actualReturnDate}\nRemarks: ${remarks}`);
+            alert(`Book returned successfully!\n\nBook: ${selectedBook.name}\nSerial No: ${serialNo}\nIssue Date: ${issueDate}\nReturn Date: ${returnDate}\nActual Return Date: ${actualReturnDate}\nRemarks: ${remarks}\nFine: ₹${fine}`);
         } catch (error) {
             console.error('Error returning book: ', error);
             alert('Error processing the return. Please try again.');
@@ -101,35 +121,35 @@ const ReturnBook = () => {
                         ))}
                     </select>
                 </label>
-                <br />
+
 
                 {/* Author (Non-editable) */}
                 <label>
                     Author:
                     <textarea value={selectedBook?.author || ''} readOnly />
                 </label>
-                <br />
+
 
                 {/* Serial No (Non-editable) */}
                 <label>
                     Serial No:
                     <input type="text" value={serialNo} readOnly />
                 </label>
-                <br />
+
 
                 {/* Issue Date (Non-editable) */}
                 <label>
                     Issue Date:
                     <input type="date" value={issueDate} readOnly />
                 </label>
-                <br />
+
 
                 {/* Return Date (Non-editable) */}
                 <label>
                     Return Date:
                     <input type="date" value={returnDate} readOnly />
                 </label>
-                <br />
+
 
                 {/* Actual Return Date */}
                 <label>
@@ -140,7 +160,7 @@ const ReturnBook = () => {
                         onChange={(e) => setActualReturnDate(e.target.value)}
                     />
                 </label>
-                <br />
+
 
                 {/* Remarks (Optional) */}
                 <label>
@@ -151,14 +171,14 @@ const ReturnBook = () => {
                         placeholder="Optional"
                     ></textarea>
                 </label>
-                <br />
+
 
                 {/* Submit Button */}
                 <button type="button" onClick={handleReturnBook}>
                     Return Book
                 </button>
-                <br />
-                <br />
+
+
             </form>
         </div>
     );

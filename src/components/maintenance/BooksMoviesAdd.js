@@ -61,11 +61,11 @@ const BooksMoviesAdd = () => {
             required
           />
         </label>
-        <br />
+        
 
         <label>
           Type:
-          <br />
+          
           <label>
             <input
               type="radio"
@@ -87,7 +87,7 @@ const BooksMoviesAdd = () => {
             Movie
           </label>
         </label>
-        <br />
+        
 
         <label>
           Book/Movie Name:
@@ -99,7 +99,7 @@ const BooksMoviesAdd = () => {
             required
           />
         </label>
-        <br />
+        
 
         <label>
           Author:
@@ -111,7 +111,7 @@ const BooksMoviesAdd = () => {
             required
           />
         </label>
-        <br />
+        
 
         <label>
           Category:
@@ -123,7 +123,7 @@ const BooksMoviesAdd = () => {
             required
           />
         </label>
-        <br />
+        
 
         <label>
           Status:
@@ -137,7 +137,7 @@ const BooksMoviesAdd = () => {
             <option value="Checked Out">Checked Out</option>
           </select>
         </label>
-        <br />
+        
 
         <label>
           Cost:
@@ -149,7 +149,7 @@ const BooksMoviesAdd = () => {
             required
           />
         </label>
-        <br />
+        
 
         <label>
           Date of Procurement:
@@ -161,7 +161,7 @@ const BooksMoviesAdd = () => {
             required
           />
         </label>
-        <br />
+        
 
         <label>
           Quantity/Copies:
@@ -174,7 +174,7 @@ const BooksMoviesAdd = () => {
             required
           />
         </label>
-        <br />
+        
 
         <button type="submit">Add Book/Movie</button>
       </form>

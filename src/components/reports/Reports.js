@@ -3,15 +3,9 @@ import { Link, Outlet } from 'react-router-dom'; // Outlet is used for nested ro
 
 const Reports = () => {
     return (
-        <div style={{ display: 'flex' }}>
+        <div  className='container'>
             {/* Sidebar */}
-            <div style={{
-                width: '200px',
-                height: '100vh',
-                background: '#f4f4f4',
-                padding: '10px',
-                borderRight: '2px solid #ddd'
-            }}>
+            <div className='sidebar'>
                 <h3>Available Reports</h3>
                 <ul style={{ listStyleType: 'none', padding: 0 }}>
                     <li><Link to="master-list-of-books">Master List of Books</Link></li>
@@ -24,8 +18,8 @@ const Reports = () => {
             </div>
 
             {/* Main Content */}
-            <div style={{ flex: 1, padding: '20px' }}>
-                <h2>Reports</h2>
+            <div className='content'>
+                <h1>Reports</h1>
                 <Outlet /> {/* This will render the nested routes */}
             </div>
         </div>

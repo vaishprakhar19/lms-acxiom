@@ -81,7 +81,7 @@ const MembershipUpdate = () => {
                         required
                     />
                 </label>
-                <br />
+                
 
                 <label>
                     Start Date:
@@ -93,7 +93,7 @@ const MembershipUpdate = () => {
                         required
                     />
                 </label>
-                <br />
+                
 
                 <label>
                     End Date:
@@ -105,11 +105,11 @@ const MembershipUpdate = () => {
                         required
                     />
                 </label>
-                <br />
+                
 
                 <label>
                     Membership Extension:
-                    <br />
+                    
                     <label>
                         <input
                             type="radio"
@@ -120,7 +120,7 @@ const MembershipUpdate = () => {
                         />
                         6 Months
                     </label>
-                    <br />
+                    
                     <label>
                         <input
                             type="radio"
@@ -131,7 +131,7 @@ const MembershipUpdate = () => {
                         />
                         One Year
                     </label>
-                    <br />
+                    
                     <label>
                         <input
                             type="radio"
@@ -143,7 +143,7 @@ const MembershipUpdate = () => {
                         Two Years
                     </label>
                 </label>
-                <br />
+                
 
                 <label>
                     Membership Remove:
@@ -159,7 +159,7 @@ const MembershipUpdate = () => {
                         }
                     />
                 </label>
-                <br />
+                
 
                 <button type="submit">
                     {formData.removeMembership ? "Remove Membership" : "Update Membership"}

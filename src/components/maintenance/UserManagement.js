@@ -102,7 +102,7 @@ const UserManagement = () => {
             <form onSubmit={handleSubmit}>
                 <label>
                     User Type:
-                    <br />
+                    
                     <label>
                         <input
                             type="radio"
@@ -113,7 +113,7 @@ const UserManagement = () => {
                         />
                         New User
                     </label>
-                    <br />
+                    
                     <label>
                         <input
                             type="radio"
@@ -125,7 +125,7 @@ const UserManagement = () => {
                         Existing User
                     </label>
                 </label>
-                <br />
+                
 
                 {formData.userType === "Existing" && (
                     <label>
@@ -139,7 +139,7 @@ const UserManagement = () => {
                         />
                     </label>
                 )}
-                <br />
+                
 
                 <label>
                     Name:
@@ -151,7 +151,7 @@ const UserManagement = () => {
                         required
                     />
                 </label>
-                <br />
+                
 
                 <label>
                     Password:
@@ -163,7 +163,7 @@ const UserManagement = () => {
                         required
                     />
                 </label>
-                <br />
+                
 
                 <label>
                     Status:
@@ -175,7 +175,7 @@ const UserManagement = () => {
                     />
                     Active
                 </label>
-                <br />
+                
 
                 <label>
                     Admin:
@@ -187,7 +187,7 @@ const UserManagement = () => {
                     />
                     Admin
                 </label>
-                <br />
+                
 
                 <button type="submit">
                     {formData.userType === "New" ? "Add User" : "Update User"}

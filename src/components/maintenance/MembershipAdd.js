@@ -60,7 +60,7 @@ const MembershipAdd = () => {
                         required
                     />
                 </label>
-                <br />
+                
 
                 <label>
                     Name:
@@ -72,7 +72,7 @@ const MembershipAdd = () => {
                         required
                     />
                 </label>
-                <br />
+                
 
                 <label>
                     Contact Number:
@@ -84,7 +84,7 @@ const MembershipAdd = () => {
                         required
                     />
                 </label>
-                <br />
+                
 
                 <label>
                     Contact Address:
@@ -96,7 +96,7 @@ const MembershipAdd = () => {
                         required
                     />
                 </label>
-                <br />
+                
 
                 <label>
                     Aadhar Card No:
@@ -108,7 +108,7 @@ const MembershipAdd = () => {
                         required
                     />
                 </label>
-                <br />
+                
 
                 <label>
                     Start Date:
@@ -120,7 +120,7 @@ const MembershipAdd = () => {
                         required
                     />
                 </label>
-                <br />
+                
 
                 <label>
                     End Date:
@@ -132,7 +132,7 @@ const MembershipAdd = () => {
                         required
                     />
                 </label>
-                <br />
+                
 
                 <label>
                     Status:
@@ -147,7 +147,7 @@ const MembershipAdd = () => {
                         <option value="Pending">Pending</option>
                     </select>
                 </label>
-                <br />
+                
 
                 <label>
                     Amount Pending:
@@ -159,7 +159,7 @@ const MembershipAdd = () => {
                         min="0"
                     />
                 </label>
-                <br />
+                
 
                 <button type="submit">Add Membership</button>
             </form>

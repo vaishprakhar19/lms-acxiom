@@ -4,16 +4,9 @@ import './Maintenance.css'; // For sidebar styles
 
 const Maintenance = () => {
   return (
-    <div style={{ display: 'flex' }}>
+    <div className='container'>
             {/* Sidebar */}
-            <div style={{
-                width: '200px',
-                height: '100vh',
-                background: '#f4f4f4',
-                padding: '10px',
-                borderRight: '2px solid #ddd'
-            }}>
-        <h2>Maintenance</h2>
+            <div className='sidebar'>
         <ul style={{ listStyleType: 'none', padding: 0 }}>
           <li>
             <Link to="membership/add">Membership</Link>
@@ -34,8 +27,8 @@ const Maintenance = () => {
           </li>
         </ul>
       </div>
-      <div className="main-content" style={{ flex: 1, padding: '20px' }}>
-        <h2>Maintenance Page</h2>
+      <div className="content" style={{ flex: 1, padding: '20px' }}>
+        <h1>Maintenance</h1>
         <Outlet />
       </div>
     </div>
