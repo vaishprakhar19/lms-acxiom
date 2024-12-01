@@ -11,11 +11,12 @@ const AdminHome = () => {
                 const querySnapshot = await getDocs(collection(db, "books"));
                 const booksList = querySnapshot.docs.map(doc => doc.data());
                 setBooks(booksList);
+                console.log(booksList)
+                localStorage.setItem("books",JSON.stringify(booksList));
             } catch (error) {
                 console.error("Error fetching books: ", error);
             }
         };
-
         fetchBooks();
     }, []);
 

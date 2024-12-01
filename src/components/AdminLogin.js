@@ -17,9 +17,9 @@ const AdminLogin = () => {
             if (!querySnapshot.empty) {
                 // Check if the user is an admin
                 const user = querySnapshot.docs[0].data(); // Get the first matching user
+                localStorage.setItem('user', JSON.stringify(user));
                 if (user.isAdmin) {
                     // Set isAdmin in localStorage if user is an admin
-                    localStorage.setItem('isAdmin', 'true');
                     navigate('/admin/home');
                 } else {
                     alert('You do not have admin privileges.');

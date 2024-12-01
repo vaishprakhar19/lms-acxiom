@@ -28,7 +28,7 @@ const BooksMoviesAdd = () => {
     e.preventDefault();
     try {
       // Add form data to Firebase Firestore
-      await addDoc(collection(db, "booksMovies"), formData);
+      await addDoc(collection(db, "books"), formData);
       alert("Book/Movie added successfully!");
       // Optionally reset form after submission
       setFormData({

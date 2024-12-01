@@ -4,25 +4,10 @@ import { collection, getDocs } from 'firebase/firestore';
 
 const MasterListOfMovies = () => {
     // Sample data for the movies (replace with actual data from your backend or API)
-    const [movies, setMovies] = useState([]);
-
-    useEffect(() => {
-        // Function to fetch movie data from Firestore
-        const fetchMovies = async () => {
-            try {
-                const querySnapshot = await getDocs(collection(db, 'movies'));  // Firestore collection for movies
-                const moviesArray = [];
-                querySnapshot.forEach((doc) => {
-                    moviesArray.push(doc.data());  // Adding movie data to the array
-                });
-                setMovies(moviesArray);  // Updating the state with fetched movies
-            } catch (error) {
-                console.error("Error fetching movies: ", error);
-            }
-        };
-
-        fetchMovies();  // Fetch movie data on component mount
-    }, []);
+    const [movies, setMovies] = useState(() => {
+        const storedBooks = localStorage.getItem("books");
+        return storedBooks ? JSON.parse(storedBooks) : []; // Default to an empty array
+    });
 
     return (
         <div>
@@ -40,7 +25,7 @@ const MasterListOfMovies = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {movies.map((movie, index) => (
+                    {movies.filter(book => book.type === 'Movie').map((movie, index) => (
                         <tr key={index}>
                             <td>{movie.serialNo}</td>
                             <td>{movie.name}</td>

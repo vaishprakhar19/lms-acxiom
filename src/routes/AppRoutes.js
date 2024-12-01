@@ -12,7 +12,7 @@ import IsBookAvailable from '../components/transactions/IsBookAvailable';
 import IssueBook from '../components/transactions/IssueBook';
 import ReturnBook from '../components/transactions/ReturnBook';
 import PayFine from '../components/transactions/PayFine';
-
+import SearchResults from '../components/transactions/SearchResults';
 // Report Routes
 import Reports from '../components/reports/Reports';
 import MasterListOfBooks from '../components/reports/MasterListOfBooks';
@@ -50,6 +50,7 @@ const AppRoutes = () => {
                     <Route path="issue-book" element={<IssueBook />} />
                     <Route path="return-book" element={<ReturnBook />} />
                     <Route path="pay-fine" element={<PayFine />} />
+                    <Route path="search-results" element={<SearchResults />} />
                 </Route>
 
                 {/* Reports Routes */}

@@ -15,11 +15,9 @@ const UserLogin = () => {
             const querySnapshot = await getDocs(q);
             
             if (!querySnapshot.empty) {
-                // User found, set isAdmin as false
-                localStorage.setItem('isAdmin', 'false');
                 // Optionally, store user details in localStorage as needed
                 const user = querySnapshot.docs[0].data();
-                localStorage.setItem('username', user.username);  // Example to store the username
+                localStorage.setItem('user', JSON.stringify(user));  // Example to store the username
                 
                 // Redirect user to the user homepage
                 navigate('/user/home');

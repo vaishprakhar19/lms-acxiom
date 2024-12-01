@@ -21,7 +21,7 @@ const UserHome = () => {
 
     return (
         <div>
-            <h2>Welcome to the Library!</h2>
+            <h2>User Home</h2>
             <table border="1" style={{ width: '50%', borderCollapse: 'collapse', margin: '20px auto' }}>
                 <thead>
                     <tr>
@@ -32,7 +32,7 @@ const UserHome = () => {
                 <tbody>
                     {books.map((book, index) => (
                         <tr key={index}>
-                            <td>{book.codeFrom}</td>
+                            <td>{book.serialNo}</td>
                             <td>{book.category}</td>
                         </tr>
                     ))}

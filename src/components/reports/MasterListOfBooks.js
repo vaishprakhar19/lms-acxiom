@@ -3,26 +3,11 @@ import { db } from '../firebase';
 import { collection, getDocs } from 'firebase/firestore';
 
 const MasterListOfBooks = () => {
-    // Sample data for the books (replace with actual data from your backend or API)
-    const [books, setBooks] = useState([]);
 
-    useEffect(() => {
-        // Fetch books data from Firestore
-        const fetchBooks = async () => {
-            try {
-                const querySnapshot = await getDocs(collection(db, 'books'));
-                const booksArray = [];
-                querySnapshot.forEach((doc) => {
-                    booksArray.push(doc.data());
-                });
-                setBooks(booksArray);
-            } catch (error) {
-                console.error("Error fetching books: ", error);
-            }
-        };
-
-        fetchBooks();
-    }, []);
+    const [books, setBooks] = useState(() => {
+        const storedBooks = localStorage.getItem("books");
+        return storedBooks ? JSON.parse(storedBooks) : []; // Default to an empty array
+    });
 
     return (
         <div>
@@ -40,7 +25,7 @@ const MasterListOfBooks = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {books.map((book, index) => (
+                    {books.filter(book => book.type === 'Book').map((book, index) => (
                         <tr key={index}>
                             <td>{book.serialNo}</td>
                             <td>{book.name}</td>

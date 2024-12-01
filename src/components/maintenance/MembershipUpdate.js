@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { db } from "../firebase"; // Import Firebase setup
-import { collection, doc, updateDoc, deleteDoc } from "firebase/firestore";
+import { collection, query, where, getDocs, updateDoc, deleteDoc } from "firebase/firestore";
 
 const MembershipUpdate = () => {
     const [formData, setFormData] = useState({
-        membershipNumber: "",
+        membershipId: "",
         startDate: "",
         endDate: "",
         membershipExtn: "6 Months", // Default to 6 months
@@ -23,7 +23,21 @@ const MembershipUpdate = () => {
         e.preventDefault();
 
         try {
-            const membershipRef = doc(collection(db, "memberships"), formData.membershipNumber);
+            const membershipsCollection = collection(db, "memberships");
+            const membershipQuery = query(
+                membershipsCollection,
+                where("membershipId", "==", formData.membershipId)
+            );
+            const querySnapshot = await getDocs(membershipQuery);
+
+            if (querySnapshot.empty) {
+                alert("No membership found with the provided membership number.");
+                return;
+            }
+
+            // Assume there's only one matching document
+            const membershipDoc = querySnapshot.docs[0];
+            const membershipRef = membershipDoc.ref;
 
             if (formData.removeMembership) {
                 // If "Remove Membership" is selected, delete the document
@@ -41,7 +55,7 @@ const MembershipUpdate = () => {
 
             // Optionally reset form after submission
             setFormData({
-                membershipNumber: "",
+                membershipId: "",
                 startDate: "",
                 endDate: "",
                 membershipExtn: "6 Months",
@@ -61,8 +75,8 @@ const MembershipUpdate = () => {
                     Membership Number:
                     <input
                         type="text"
-                        name="membershipNumber"
-                        value={formData.membershipNumber}
+                        name="membershipId"
+                        value={formData.membershipId}
                         onChange={handleChange}
                         required
                     />
@@ -134,10 +148,15 @@ const MembershipUpdate = () => {
                 <label>
                     Membership Remove:
                     <input
-                        type="radio"
+                        type="checkbox"
                         name="removeMembership"
                         checked={formData.removeMembership}
-                        onChange={() => setFormData((prev) => ({ ...prev, removeMembership: true }))}
+                        onChange={(e) =>
+                            setFormData((prev) => ({
+                                ...prev,
+                                removeMembership: e.target.checked,
+                            }))
+                        }
                     />
                 </label>
                 <br />

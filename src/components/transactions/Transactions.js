@@ -4,7 +4,7 @@ import './Transactions.css';
 
 const Transactions = () => {
     return (
-        <div className="transactions-container">
+        <div className="transactions-container" style={{ display: 'flex' }}>
             <aside className="sidebar" style={{
                 width: '200px',
                 height: '100vh',
@@ -27,7 +27,8 @@ const Transactions = () => {
                     </li>
                 </ul>
             </aside>
-            <main className="content">
+            <main className="content"  style={{ flex: 1, padding: '20px' }}>
+                <h1>Transactions</h1>
                 <Outlet />
             </main>
         </div>

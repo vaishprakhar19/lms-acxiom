@@ -5,7 +5,6 @@ import { collection, getDocs, doc, updateDoc } from "firebase/firestore";
 
 const BooksMoviesUpdate = () => {
   const [type, setType] = useState("Book"); // Default to Book
-  const [entries, setEntries] = useState([]); // Store existing books/movies
   const [selectedEntry, setSelectedEntry] = useState(""); // Selected entry ID
   const [formData, setFormData] = useState({
     name: "",
@@ -14,19 +13,10 @@ const BooksMoviesUpdate = () => {
     date: "",
   });
 
-  // Fetch existing entries from Firebase
-  useEffect(() => {
-    const fetchEntries = async () => {
-      const querySnapshot = await getDocs(collection(db, "booksMovies"));
-      const data = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setEntries(data);
-    };
-
-    fetchEntries();
-  }, []);
+  const [books, setBooks] = useState(() => {
+    const storedBooks = localStorage.getItem("books");
+    return storedBooks ? JSON.parse(storedBooks) : []; // Default to an empty array
+});
 
   const handleTypeChange = (e) => {
     setType(e.target.value);
@@ -40,7 +30,7 @@ const BooksMoviesUpdate = () => {
   };
 
   const handleEntryChange = (e) => {
-    const selected = entries.find((entry) => entry.id === e.target.value);
+    const selected = books.find((entry) => entry.id === e.target.value);
     setSelectedEntry(e.target.value);
     setFormData({
       name: selected?.name || "",
@@ -66,7 +56,7 @@ const BooksMoviesUpdate = () => {
     }
 
     try {
-      const entryRef = doc(db, "booksMovies", selectedEntry);
+      const entryRef = doc(db, "books", selectedEntry);
       await updateDoc(entryRef, {
         ...formData,
         type,
@@ -111,7 +101,7 @@ const BooksMoviesUpdate = () => {
           Select Book/Movie:
           <select value={selectedEntry} onChange={handleEntryChange} required>
             <option value="">-- Select --</option>
-            {entries
+            {books
               .filter((entry) => entry.type === type)
               .map((entry) => (
                 <option key={entry.id} value={entry.id}>

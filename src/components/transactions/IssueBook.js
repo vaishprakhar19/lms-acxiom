@@ -3,12 +3,14 @@ import { db } from '../firebase';  // Import Firebase setup
 import { collection, addDoc } from 'firebase/firestore';
 
 const IssueBook = () => {
-    const books = [
-        { name: 'Book A', author: 'Author A' },
-        { name: 'Book B', author: 'Author B' },
-        { name: 'Book C', author: 'Author C' },
-    ];
-
+    const [books, setBooks] = useState(() => {
+        const storedBooks = localStorage.getItem("books");
+        return storedBooks ? JSON.parse(storedBooks) : []; // Default to an empty array
+    });
+    const [user, setUser] = useState(() => {
+        const storedUser = localStorage.getItem("user");
+        return storedUser ? JSON.parse(storedUser) : {}; // Default to an empty object
+    });
     const [selectedBook, setSelectedBook] = useState(books[0]);
     const [issueDate, setIssueDate] = useState(new Date().toISOString().split('T')[0]); // Today's date
     const [returnDate, setReturnDate] = useState(() => {
@@ -21,13 +23,14 @@ const IssueBook = () => {
     // Firebase function to store the issued book details
     const handleIssueBook = async () => {
         try {
-            await addDoc(collection(db, "issuedBooks"), {
-                bookName: selectedBook.name,
+            await addDoc(collection(db, "issues"), {
+                serialNo: selectedBook.serialNo,
+                membershipId: user.membershipId,
+                name: selectedBook.name,
                 author: selectedBook.author,
                 issueDate: issueDate,
                 returnDate: returnDate,
                 remarks: remarks,
-                issueStatus: 'issued',  // Default status
             });
 
             alert(`Book issued successfully!\n\nBook: ${selectedBook.name}\nAuthor: ${selectedBook.author}\nIssue Date: ${issueDate}\nReturn Date: ${returnDate}\nRemarks: ${remarks}`);

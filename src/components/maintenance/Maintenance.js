@@ -30,15 +30,11 @@ const Maintenance = () => {
             </ul>
           </li>
           <li>
-            <Link to="user-management/add">User Management</Link>
-            <ul>
-              <li><Link to="user-management/add">Add</Link></li>
-              <li><Link to="user-management/update">Update</Link></li>
-            </ul>
+            <Link to="user-management">User Management</Link>
           </li>
         </ul>
       </div>
-      <div className="main-content">
+      <div className="main-content" style={{ flex: 1, padding: '20px' }}>
         <h2>Maintenance Page</h2>
         <Outlet />
       </div>

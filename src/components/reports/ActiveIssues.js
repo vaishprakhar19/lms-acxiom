@@ -1,18 +1,22 @@
+import { collection, getDocs } from 'firebase/firestore';
 import React, { useState, useEffect } from 'react';
+import { db } from '../firebase';
 
 const ActiveIssues = () => {
     // Sample data for active issues (replace with actual data from your backend or API)
     const [activeIssues, setActiveIssues] = useState([]);
 
     useEffect(() => {
-        // This is where you would fetch data from an API or database
-        // For now, we're using static data for demonstration
-        setActiveIssues([
-            { serialNo: 'ISS001', name: 'The Great Gatsby', membershipId: 'M001', dateOfIssue: '2023-01-10', dateOfReturn: '2023-01-25' },
-            { serialNo: 'ISS002', name: '1984', membershipId: 'M002', dateOfIssue: '2022-12-15', dateOfReturn: '2023-01-15' },
-            { serialNo: 'ISS003', name: 'Inception', membershipId: 'M003', dateOfIssue: '2023-02-01', dateOfReturn: '2023-02-16' },
-            // Add more issue data here...
-        ]);
+        const fetchIssues = async () => {
+            try {
+                const querySnapshot = await getDocs(collection(db, "issues"));
+                const issuesList = querySnapshot.docs.map(doc => doc.data());
+                setActiveIssues(issuesList);
+            } catch (error) {
+                console.error("Error fetching issues: ", error);
+            }
+        };
+        fetchIssues();
     }, []);
 
     return (
@@ -34,8 +38,8 @@ const ActiveIssues = () => {
                             <td>{issue.serialNo}</td>
                             <td>{issue.name}</td>
                             <td>{issue.membershipId}</td>
-                            <td>{issue.dateOfIssue}</td>
-                            <td>{issue.dateOfReturn}</td>
+                            <td>{issue.issueDate}</td>
+                            <td>{issue.returnDate}</td>
                         </tr>
                     ))}
                 </tbody>
